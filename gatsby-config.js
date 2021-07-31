@@ -1,20 +1,20 @@
 module.exports = {
-	siteMetadata: {
-		title: "VallyQ",
-	},
-	plugins: [
-		{
-			resolve: "gatsby-plugin-firebase",
-			options: {
-				credentials: {
-					apiKey: "AIzaSyCsd9NhwvjQ2i4lMD5ZxQQKg4zo7YudETM",
-					authDomain: "vally-q.firebaseapp.com",
-					projectId: "vally-q",
-					storageBucket: "vally-q.appspot.com",
-					messagingSenderId: "262250697410",
-					appId: "1:262250697410:web:34d757a703a2e8244de15b",
-				},
-			},
-		},
-	],
+    siteMetadata: {
+        title: "Progress",
+    },
+    plugins: [
+        {
+            resolve: "gatsby-plugin-firebase",
+            options: {
+                credentials: {
+                    apiKey: "AIzaSyD7yWJu9QZjqXWRHco-3DS0LzoEzxZDYKs",
+                    authDomain: "progress-f9f99.firebaseapp.com",
+                    projectId: "progress-f9f99",
+                    storageBucket: "progress-f9f99.appspot.com",
+                    messagingSenderId: "1098330093257",
+                    appId: "1:1098330093257:web:c457d67bf9d6abd0a33f18",
+                },
+            },
+        },
+    ],
 }

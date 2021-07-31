@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import firebase from "gatsby-plugin-firebase"
+import db from "~config/firebase-config"
 
 import { User } from "~models/user"
 
@@ -32,21 +32,20 @@ function useUser(): UserProviderType {
     const [userId, setUserId] = useState("")
 
     useEffect(() => {
-        firebase.auth().onAuthStateChanged(userAuth => {
+        db.auth().onAuthStateChanged(userAuth => {
             if (userAuth) setUserId(userAuth.uid)
         })
     }, [])
 
     useEffect(() => {
-        if (firebase.auth().currentUser?.uid) {
-            setUserId(firebase.auth().currentUser!.uid)
+        if (db.auth().currentUser?.uid) {
+            setUserId(db.auth().currentUser!.uid)
         }
     }, [])
 
     useEffect(() => {
         if (!userId) return
-        firebase
-            .firestore()
+        db.firestore()
             .collection("Users")
             .doc(userId)
             .onSnapshot(doc => {
