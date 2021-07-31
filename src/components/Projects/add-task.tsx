@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { Box, Input, Button, useToast } from "@chakra-ui/react"
+import { Box, Input, Button, useToast, Flex } from "@chakra-ui/react"
 import { UserContext } from "~config/user-context"
 import { addTask } from "../../controllers/project"
 import AddDeadline from "./add-deadline"
@@ -31,7 +31,9 @@ const AddTask: React.FC<{
                 description: "Project added successfully.",
                 status: "success",
             })
-            setLevel("2")
+            setTitle("")
+            setDesc("")
+            setDate("")
         } else {
             toast({
                 title: "Error",
@@ -41,9 +43,9 @@ const AddTask: React.FC<{
         }
     }
 
-    if (level == "3")
-        return (
-            <Box>
+    return (
+        <Box>
+            <Flex direction="column" gridRowGap={10}>
                 <Box>
                     <Input
                         placeholder="Task Title"
@@ -68,16 +70,14 @@ const AddTask: React.FC<{
                         value={date}
                     />
                 </Box>
-                <Button onClick={handleAddButton}>Add</Button>
+            </Flex>
+            <Box align="center">
+                <Button mt={10} onClick={handleAddButton}>
+                    Add
+                </Button>
             </Box>
-        )
-    else if (level == "2")
-        return (
-            <Box>
-                <AddDeadline project={project} />
-            </Box>
-        )
-    else return <Box>Error with add-task component</Box>
+        </Box>
+    )
 }
 
 export default AddTask

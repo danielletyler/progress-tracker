@@ -8,23 +8,32 @@ import {
     ModalContent,
     ModalHeader,
     useDisclosure,
+    Flex,
 } from "@chakra-ui/react"
 import {
     getAllTasks,
     getAllDeadlines,
     getAllProjects,
+    deleteProject,
+    deleteDeadline,
+    deleteTask,
 } from "../../controllers/project"
 import { UserContext } from "~config/user-context"
 import { Deadline, Project, Task } from "~models"
 import AddProject from "../Projects/add-project"
 import AddDeadline from "../Projects/add-deadline"
+import AddTask from "../Projects/add-task"
 
 const Dash = () => {
     const { userId } = useContext(UserContext)
     const [projData, setProjData] = useState<Project[]>([])
     const [deadlineData, setDeadlineData] = useState<Deadline[]>([])
     const [taskData, setTaskData] = useState<Task[]>([])
-    const [level, setLevel] = useState("1")
+    // const [level, setLevel] = useState("1")
+    const [state, setState] = useState({
+        level: "1",
+        update: false,
+    })
     const [project, setProject] = useState("")
     const [deadline, setDeadline] = useState("")
     const [modal, setModal] = useState(false)
@@ -36,29 +45,29 @@ const Dash = () => {
             if (!res.data) return
             return setProjData(res.data)
         })
-    }, [])
+    }, [state])
 
     useEffect(() => {
         getAllDeadlines(userId as string, project).then(res => {
             if (!res.data) return
             return setDeadlineData(res.data)
         })
-    }, [level])
+    }, [state])
 
     useEffect(() => {
         getAllTasks(userId as string, project, deadline).then(res => {
             if (!res.data) return
             return setTaskData(res.data)
         })
-    }, [level])
+    }, [state])
 
     const goBack = () => {
-        const levelNum = parseInt(level)
+        const levelNum = parseInt(state.level)
         const newLevel = (levelNum - 1).toString()
-        setLevel(newLevel)
+        setState({ ...state, level: newLevel })
     }
 
-    if (level == "1")
+    if (state.level == "1")
         return (
             <Box>
                 <Box>
@@ -72,7 +81,7 @@ const Dash = () => {
                             borderRadius="xl"
                             _hover={{ boxShadow: "md" }}
                             onClick={() => {
-                                setLevel("2")
+                                setState({ ...state, level: "2" })
                                 setProject(item.title)
                             }}
                         >
@@ -88,7 +97,13 @@ const Dash = () => {
                 <Modal isOpen={modal} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent p={5}>
-                        <Button w="max-content" onClick={() => setModal(false)}>
+                        <Button
+                            w="max-content"
+                            onClick={() => {
+                                setModal(false)
+                                setState({ ...state, update: true })
+                            }}
+                        >
                             X
                         </Button>
                         <ModalHeader alignSelf="center" fontSize="20px">
@@ -99,13 +114,12 @@ const Dash = () => {
                 </Modal>
             </Box>
         )
-    else if (level == "2")
+    else if (state.level == "2")
         return (
             <Box>
                 <Button
                     onClick={() => {
                         goBack()
-                        console.log(level)
                     }}
                 >
                     go back
@@ -124,7 +138,7 @@ const Dash = () => {
                             borderRadius="xl"
                             _hover={{ boxShadow: "md" }}
                             onClick={() => {
-                                setLevel("3")
+                                setState({ ...state, level: "3" })
                                 setDeadline(item.title)
                             }}
                         >
@@ -137,10 +151,24 @@ const Dash = () => {
                 <Button m={4} onClick={() => setModal(true)}>
                     Add Deadline
                 </Button>
+                <Button
+                    onClick={() => {
+                        deleteProject(userId, project)
+                        goBack()
+                    }}
+                >
+                    Delete Project
+                </Button>
                 <Modal isOpen={modal} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent p={5}>
-                        <Button w="max-content" onClick={() => setModal(false)}>
+                        <Button
+                            w="max-content"
+                            onClick={() => {
+                                setModal(false)
+                                setState({ ...state, update: true })
+                            }}
+                        >
                             X
                         </Button>
                         <ModalHeader alignSelf="center" fontSize="20px">
@@ -151,13 +179,12 @@ const Dash = () => {
                 </Modal>
             </Box>
         )
-    else if (level === "3")
+    else if (state.level === "3")
         return (
             <Box>
                 <Button
                     onClick={() => {
                         goBack()
-                        console.log(level)
                     }}
                 >
                     go back
@@ -166,21 +193,69 @@ const Dash = () => {
                     <Text fontSize="30px">{project}</Text>
                     <Text fontSize="20px">{deadline}</Text>
                 </Box>
-                {taskData.map(item => (
-                    <Box
-                        m={4}
-                        p={4}
-                        border="1px solid black"
-                        width="500px"
-                        h="200px"
-                        borderRadius="xl"
-                        _hover={{ boxShadow: "md" }}
-                    >
-                        <Text>{item.title}</Text>
-                        <Text>{item.desc}</Text>
-                        <Text>{item.date}</Text>
-                    </Box>
-                ))}
+                <Box>
+                    {taskData.map(item => (
+                        <Box
+                            m={4}
+                            p={4}
+                            border="1px solid black"
+                            width="500px"
+                            h="200px"
+                            borderRadius="xl"
+                            _hover={{ boxShadow: "md" }}
+                        >
+                            <Flex direction="column" gridRowGap={10}>
+                                <Box>
+                                    <Text>{item.title}</Text>
+                                    <Text>{item.desc}</Text>
+                                    <Text>{item.date}</Text>
+                                </Box>
+                                <Button
+                                    onClick={() => {
+                                        deleteTask(
+                                            userId,
+                                            project,
+                                            deadline,
+                                            item.title
+                                        )
+                                    }}
+                                    w="max-content"
+                                >
+                                    Delete Task
+                                </Button>
+                            </Flex>
+                        </Box>
+                    ))}
+                </Box>
+                <Button m={4} onClick={() => setModal(true)}>
+                    Add Task
+                </Button>
+                <Button
+                    onClick={() => {
+                        deleteDeadline(userId, project, deadline)
+                        goBack()
+                    }}
+                >
+                    Delete Deadline
+                </Button>
+                <Modal isOpen={modal} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent p={5}>
+                        <Button
+                            w="max-content"
+                            onClick={() => {
+                                setModal(false)
+                                setState({ ...state, update: true })
+                            }}
+                        >
+                            X
+                        </Button>
+                        <ModalHeader alignSelf="center" fontSize="20px">
+                            New Task
+                        </ModalHeader>
+                        <AddTask project={project} deadline={deadline} />
+                    </ModalContent>
+                </Modal>
             </Box>
         )
     else return <Box>There is an error on dash.tsx component</Box>

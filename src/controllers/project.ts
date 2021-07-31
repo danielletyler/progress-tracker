@@ -57,6 +57,30 @@ export async function getProject(
     }
 }
 
+export async function deleteProject(
+    userId: string,
+    title: string
+): Promise<DBResult<Project>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef.doc(title).delete()
+        return {
+            status: "success",
+            message: `Successfully deleted project with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to delete project with title ${title}`,
+        }
+    }
+}
+
 export async function getAllProjects(
     userId: string
 ): Promise<DBResult<Project[]>> {
@@ -120,6 +144,35 @@ export async function addDeadline(
         return {
             status: "error",
             message: `Deadline with title ${title} could not be created: ${error}`,
+        }
+    }
+}
+
+export async function deleteDeadline(
+    userId: string,
+    project: string,
+    title: string
+): Promise<DBResult<Project>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef
+            .doc(project)
+            .collection("Deadlines")
+            .doc(title)
+            .delete()
+        return {
+            status: "success",
+            message: `Successfully deleted deadline with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to delete deadline with title ${title}`,
         }
     }
 }
@@ -225,6 +278,38 @@ export async function addTask(
         return {
             status: "error",
             message: `Task with title ${title} could not be created: ${error}`,
+        }
+    }
+}
+
+export async function deleteTask(
+    userId: string,
+    project: string,
+    deadline: string,
+    title: string
+): Promise<DBResult<Project>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef
+            .doc(project)
+            .collection("Deadlines")
+            .doc(deadline)
+            .collection("Tasks")
+            .doc(title)
+            .delete()
+        return {
+            status: "success",
+            message: `Successfully deleted task with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to delete task with title ${title}`,
         }
     }
 }
