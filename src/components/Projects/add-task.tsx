@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react"
 import { Box, Input, Button, useToast, Flex } from "@chakra-ui/react"
 import { UserContext } from "~config/user-context"
 import { addTask } from "../../controllers/project"
-import AddDeadline from "./add-deadline"
 
 const AddTask: React.FC<{
     project: string
@@ -13,7 +12,6 @@ const AddTask: React.FC<{
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
     const [date, setDate] = useState("")
-    const [level, setLevel] = useState("3")
 
     async function handleAddButton() {
         if (!userId) return

@@ -1,5 +1,5 @@
 import db from "~config/firebase-config"
-import { DBResult, Deadline, Project, Task } from "../models"
+import { DBResult, Deadline, Project, Task, UpdateTask } from "../models"
 
 export async function addProject(
     userId: string,
@@ -17,6 +17,7 @@ export async function addProject(
             title: title,
             due_date: due_date,
             overview: overview,
+            isCompleted: false,
         }
         await projRef.doc(title).set(newProject)
         return {
@@ -129,6 +130,7 @@ export async function addDeadline(
             title: title,
             desc: desc,
             date: date,
+            isCompleted: false,
         }
         await projRef
             .doc(newDeadline.project)
@@ -261,6 +263,7 @@ export async function addTask(
             title: title,
             desc: desc,
             date: date,
+            isCompleted: false,
         }
         await projRef
             .doc(newTask.project)
@@ -347,6 +350,41 @@ export async function getAllTasks(
         return {
             status: "error",
             message: `Failed to get tasks from deadline ${deadline}`,
+        }
+    }
+}
+
+export async function updateTask(
+    userId: string,
+    project: string,
+    deadline: string,
+    title: string,
+    updateTaskData: UpdateTask
+): Promise<DBResult<undefined>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef
+            .doc(project)
+            .collection("Deadlines")
+            .doc(deadline)
+            .collection("Tasks")
+            .doc(title)
+            .update({
+                ...updateTaskData,
+            })
+        return {
+            status: "success",
+            message: `Successfully updated task with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to update task with title ${title}: ${e}`,
         }
     }
 }

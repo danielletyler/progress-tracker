@@ -2,6 +2,7 @@ export type Project = {
     title: string
     overview: string
     due_date: string
+    isCompleted: boolean
 }
 
 export type Deadline = {
@@ -9,6 +10,7 @@ export type Deadline = {
     date: string
     title: string
     desc: string
+    isCompleted: boolean
 }
 
 export type Task = {
@@ -17,4 +19,14 @@ export type Task = {
     date: string
     title: string
     desc: string
+    isCompleted: boolean
+}
+
+export type UpdateTask = {
+    project?: string
+    deadline_title?: string
+    date?: string
+    title?: string
+    desc?: string
+    isCompleted?: boolean
 }
