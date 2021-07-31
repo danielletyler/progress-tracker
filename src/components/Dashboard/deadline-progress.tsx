@@ -27,12 +27,31 @@ const DeadlineProgress: React.FC<{
         return setCompleted(array.length)
     }, [tasks])
 
+    const sectionSize = 100 / tasks.length
+    const widthSize = sectionSize * completed
+    const widthString = widthSize.toString()
+    const finalString = widthString + "%"
+
     return (
-        <Box>
-            <Flex>
-                <Text>{completed}</Text>
-                <Text>/</Text>
-                <Text>{tasks.length}</Text>
+        <Box py={10}>
+            <Flex gridColumnGap={2}>
+                <Box
+                    bg="grey"
+                    w="100%"
+                    h="20px"
+                    px={1}
+                    pb={1}
+                    pt={1}
+                    align="left"
+                    borderRadius="xl"
+                >
+                    <Box bg="blue" w={finalString} h="100%" borderRadius="xl" />
+                </Box>
+                <Flex>
+                    <Text>{completed}</Text>
+                    <Text>/</Text>
+                    <Text>{tasks.length}</Text>
+                </Flex>
             </Flex>
         </Box>
     )
