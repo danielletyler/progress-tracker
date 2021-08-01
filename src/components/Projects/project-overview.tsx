@@ -1,13 +1,8 @@
 import React from "react"
-import { Box, Text } from "@chakra-ui/react"
-import { Project } from "~models"
+import { Box } from "@chakra-ui/react"
 
-const ProjectOverview: React.FC<{ project: Project }> = ({ project }) => {
-    return (
-        <Box>
-            <Text>{project.title}</Text>
-        </Box>
-    )
+const ProjectOverview: React.FC<{}> = ({}) => {
+    return <Box></Box>
 }
 
 export default ProjectOverview

@@ -1,50 +1,32 @@
 import React, { useState, useEffect } from "react"
 import { Box, Flex, Text } from "@chakra-ui/react"
-import { Task } from "~models"
-import { getAllTasks, updateDeadline } from "../../controllers/project"
+import { Deadline } from "~models"
+import { getAllDeadlines } from "../../controllers/project"
 
-const DeadlineProgress: React.FC<{
+const ProjectProgress: React.FC<{
     userId: string
     project: string
-    deadline: string
-    // level: string
-}> = ({ userId, project, deadline }) => {
-    const [tasks, setTasks] = useState<Task[]>([])
+}> = ({ userId, project }) => {
+    const [deadlines, setDeadlines] = useState<Deadline[]>([])
     const [completed, setCompleted] = useState(0)
     const [isLoading, setisLoading] = useState(true)
+
     useEffect(() => {
-        getAllTasks(userId as string, project, deadline).then(res => {
+        getAllDeadlines(userId as string, project).then(res => {
             if (!res.data) return
-            return setTasks(res.data)
+            return setDeadlines(res.data)
         })
-    }, [deadline])
+    }, [project])
 
     useEffect(() => {
         const array = []
-        tasks.forEach(item => {
+        deadlines.forEach(item => {
             if (item.isCompleted == true) array.push(item.title)
         })
-        return setCompleted(array.length)
-    }, [tasks])
+        return setCompleted(array.length), setisLoading(false)
+    }, [deadlines])
 
-    useEffect(() => {
-        const array = []
-        tasks.forEach(item => {
-            if (item.isCompleted == true)
-                array.push(item.title), setisLoading(false)
-        })
-        if (array.length == tasks.length)
-            updateDeadline(userId, project, deadline, { isCompleted: true }),
-                setisLoading(false)
-        if (array.length != tasks.length)
-            updateDeadline(userId, project, deadline, { isCompleted: false }),
-                setisLoading(false)
-        if (tasks.length == 0)
-            updateDeadline(userId, project, deadline, { isCompleted: true }),
-                setisLoading(false)
-    }, [tasks])
-
-    const sectionSize = 100 / tasks.length
+    const sectionSize = 100 / deadlines.length
     const widthSize = sectionSize * completed
     const widthString = widthSize.toString()
     const finalString = widthString + "%"
@@ -63,7 +45,7 @@ const DeadlineProgress: React.FC<{
                         borderRadius="xl"
                     >
                         <Box
-                            bgGradient="linear(to-l, #FF9190, #FDC094 )"
+                            bgGradient="linear(to-r, #5E72EB, #5E72EB, #FF9190, #FDC094)"
                             w={finalString}
                             h="100%"
                             borderRadius="xl"
@@ -72,11 +54,11 @@ const DeadlineProgress: React.FC<{
                     <Flex>
                         <Text color="#FFFFFF">{completed}</Text>
                         <Text color="#FFFFFF">/</Text>
-                        <Text color="#FFFFFF">{tasks.length}</Text>
+                        <Text color="#FFFFFF">{deadlines.length}</Text>
                     </Flex>
                 </Flex>
             </Box>
         )
 }
 
-export default DeadlineProgress
+export default ProjectProgress

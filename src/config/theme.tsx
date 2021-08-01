@@ -1,5 +1,7 @@
 import { extendTheme } from "@chakra-ui/react"
 import { createBreakpoints } from "@chakra-ui/theme-tools"
+import "@fontsource/montserrat"
+import "@fontsource/poppins"
 
 const fonts = {
     body: "Poppins",

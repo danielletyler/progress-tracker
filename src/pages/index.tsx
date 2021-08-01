@@ -8,9 +8,8 @@ const IndexPage = () => {
     const { userId } = useContext(UserContext)
 
     if (!userId) return <Auth />
-    // return <ResponsiveBlock>Hello!</ResponsiveBlock>
     return (
-        <Box>
+        <Box bg="#1F2933" h="100vh">
             <Dash />
         </Box>
     )

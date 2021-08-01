@@ -112,6 +112,33 @@ export async function getAllProjects(
     }
 }
 
+export async function updateProject(
+    userId: string,
+    title: string,
+    updateTaskData: UpdateTask
+): Promise<DBResult<undefined>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef.doc(title).update({
+            ...updateTaskData,
+        })
+        return {
+            status: "success",
+            message: `Successfully updated project with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to update project with title ${title}: ${e}`,
+        }
+    }
+}
+
 export async function addDeadline(
     userId: string,
     project: string,
@@ -243,6 +270,38 @@ export async function getAllDeadlines(
     }
 }
 
+export async function updateDeadline(
+    userId: string,
+    project: string,
+    title: string,
+    updateTaskData: UpdateTask
+): Promise<DBResult<undefined>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        await projRef
+            .doc(project)
+            .collection("Deadlines")
+            .doc(title)
+            .update({
+                ...updateTaskData,
+            })
+        return {
+            status: "success",
+            message: `Successfully updated deadline with title ${title}`,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to update deadline with title ${title}: ${e}`,
+        }
+    }
+}
+
 export async function addTask(
     userId: string,
     project: string,
@@ -281,6 +340,39 @@ export async function addTask(
         return {
             status: "error",
             message: `Task with title ${title} could not be created: ${error}`,
+        }
+    }
+}
+
+export async function getTask(
+    userId: string,
+    project: string,
+    deadline: string,
+    title: string
+): Promise<DBResult<Task>> {
+    try {
+        const projRef = db
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("projects")
+        const task = await projRef
+            .doc(project)
+            .collection("Deadlines")
+            .doc(deadline)
+            .collection("Tasks")
+            .doc(title)
+            .get()
+        return {
+            status: "success",
+            message: `Successfully returned task ${title} from deadline ${deadline}`,
+            data: task.data() as Task,
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            status: "error",
+            message: `Failed to get task with title ${title}`,
         }
     }
 }
