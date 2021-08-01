@@ -23,7 +23,7 @@ import {
     updateTask,
 } from "../../controllers/project"
 import { UserContext } from "~config/user-context"
-import { Deadline, Project, Task } from "~models"
+import { Deadline, Project, Task, User } from "~models"
 import AddProject from "../Projects/add-project"
 import AddDeadline from "../Projects/add-deadline"
 import AddTask from "../Projects/add-task"
@@ -33,10 +33,14 @@ import {
     FaPlusCircle,
     FaChevronCircleLeft,
     FaMinusCircle,
+    FaRedo,
 } from "react-icons/fa"
+import { getUser } from "../../controllers/user"
+import TaskProgress from "./task-progress"
 
 const Dash = () => {
     const { userId } = useContext(UserContext)
+    const [user, setUser] = useState<User | undefined>(undefined)
     const [projData, setProjData] = useState<Project[]>([])
     const [deadlineData, setDeadlineData] = useState<Deadline[]>([])
     const [taskData, setTaskData] = useState<Task[]>([])
@@ -51,6 +55,13 @@ const Dash = () => {
     const [isLoadingDead, setIsLoadingDead] = useState(true)
     const [isLoadingTask, setIsLoadingTask] = useState(true)
     const { onClose } = useDisclosure()
+
+    useEffect(() => {
+        getUser(userId).then(res => {
+            if (!res.data) return
+            return setUser(res.data)
+        })
+    }, [])
 
     useEffect(() => {
         getAllProjects(userId as string).then(res => {
@@ -92,7 +103,7 @@ const Dash = () => {
                     <ResponsiveBlock>
                         <Box py={10}>
                             <Text color="#FFFFFF" fontSize="50px">
-                                Dashboard
+                                {user?.first_name}'s Dashboard
                             </Text>
                         </Box>
                         <Box align="center" mt={10}>
@@ -174,20 +185,32 @@ const Dash = () => {
         else
             return (
                 <Box bg="#1F2933" h="max-content">
-                    <Flex>
+                    <Flex justify="space-between">
+                        <Flex>
+                            <Icon
+                                fontSize="30px"
+                                m={10}
+                                as={FaChevronCircleLeft}
+                                color="white"
+                                bg="black"
+                                onClick={() => {
+                                    goBack()
+                                }}
+                            />
+                            <Text color="white" mt={12}>
+                                {`>`} {project}
+                            </Text>
+                        </Flex>
                         <Icon
                             fontSize="30px"
                             m={10}
-                            as={FaChevronCircleLeft}
+                            as={FaRedo}
                             color="white"
                             bg="black"
                             onClick={() => {
-                                goBack()
+                                setState({ ...state, update: !state.update })
                             }}
-                        ></Icon>
-                        <Text color="white" mt={12}>
-                            {`>`} {project}
-                        </Text>
+                        />
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center">
@@ -303,20 +326,32 @@ const Dash = () => {
         else
             return (
                 <Box bg="#1F2933" h="max-content">
-                    <Flex>
+                    <Flex justify="space-between">
+                        <Flex>
+                            <Icon
+                                fontSize="30px"
+                                m={10}
+                                as={FaChevronCircleLeft}
+                                color="white"
+                                bg="black"
+                                onClick={() => {
+                                    goBack()
+                                }}
+                            />
+                            <Text color="white" mt={12}>
+                                {`>`} {project}
+                            </Text>
+                        </Flex>
                         <Icon
                             fontSize="30px"
                             m={10}
-                            as={FaChevronCircleLeft}
+                            as={FaRedo}
                             color="white"
                             bg="black"
                             onClick={() => {
-                                goBack()
+                                setState({ ...state, update: !state.update })
                             }}
-                        ></Icon>
-                        <Text color="white" mt={12}>
-                            {`>`} {project} {`>`} {deadline}
-                        </Text>
+                        />
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center" py={20}>
@@ -344,7 +379,7 @@ const Dash = () => {
                                         px={10}
                                     >
                                         <Flex gridColumnGap={5}>
-                                            <Checkbox
+                                            {/* <Checkbox 
                                                 size="lg"
                                                 colorScheme="telegram"
                                                 defaultIsChecked={
@@ -365,7 +400,13 @@ const Dash = () => {
                                                         update: !state.update,
                                                     })
                                                 }}
-                                            ></Checkbox>
+                                            ></Checkbox> */}
+                                            <TaskProgress
+                                                userId={userId}
+                                                project={project}
+                                                deadline={deadline}
+                                                task={item.title}
+                                            />
                                             <Box pt={1}>
                                                 <Text
                                                     color="white"
