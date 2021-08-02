@@ -45,7 +45,7 @@ const ProjectProgress: React.FC<{
                         borderRadius="xl"
                     >
                         <Box
-                            bgGradient="linear(to-r, #5E72EB, #5E72EB, #FF9190, #FDC094)"
+                            bgGradient="linear(to-l, #5E72EB, #5E72EB, #FF9190, #FDC094)"
                             w={finalString}
                             h="100%"
                             borderRadius="xl"

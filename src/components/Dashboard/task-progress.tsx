@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Box, Flex, Text, Checkbox } from "@chakra-ui/react"
+import { Box, Checkbox } from "@chakra-ui/react"
 import { Task } from "~models"
 import { getTask, updateTask } from "../../controllers/project"
 
@@ -25,7 +25,7 @@ const TaskProgress: React.FC<{
             <Box>
                 <Checkbox
                     size="lg"
-                    colorScheme="telegram"
+                    colorScheme="gray"
                     defaultIsChecked={taskData!.isCompleted}
                     onChange={e => {
                         updateTask(userId, project, deadline, taskData!.title, {

@@ -9,8 +9,11 @@ import {
     ModalHeader,
     useDisclosure,
     Flex,
-    Checkbox,
     Icon,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
 } from "@chakra-ui/react"
 import ResponsiveBlock from "../shared/responsive-block"
 import {
@@ -20,13 +23,12 @@ import {
     deleteProject,
     deleteDeadline,
     deleteTask,
-    updateTask,
 } from "../../controllers/project"
 import { UserContext } from "~config/user-context"
 import { Deadline, Project, Task, User } from "~models"
-import AddProject from "../Projects/add-project"
-import AddDeadline from "../Projects/add-deadline"
-import AddTask from "../Projects/add-task"
+import AddProject from "../Add/add-project"
+import AddDeadline from "../Add/add-deadline"
+import AddTask from "../Add/add-task"
 import DeadlineProgress from "./deadline-progress"
 import ProjectProgress from "./project-progress"
 import {
@@ -34,9 +36,11 @@ import {
     FaChevronCircleLeft,
     FaMinusCircle,
     FaRedo,
+    FaEllipsisH,
 } from "react-icons/fa"
 import { getUser } from "../../controllers/user"
 import TaskProgress from "./task-progress"
+import EditProject from "../Edit/edit-project"
 
 const Dash = () => {
     const { userId } = useContext(UserContext)
@@ -51,6 +55,8 @@ const Dash = () => {
     const [project, setProject] = useState("")
     const [deadline, setDeadline] = useState("")
     const [modal, setModal] = useState(false)
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [deleteTaskModal, setDeleteTaskModal] = useState(false)
     const [isLoadingProj, setIsLoadingProj] = useState(true)
     const [isLoadingDead, setIsLoadingDead] = useState(true)
     const [isLoadingTask, setIsLoadingTask] = useState(true)
@@ -214,47 +220,69 @@ const Dash = () => {
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center">
-                            <Text color="#FFFFFF" fontSize="30px">
-                                {project} Overview
-                            </Text>
+                            <Flex width="max-content">
+                                <Text color="#FFFFFF" fontSize="30px">
+                                    {project} Overview
+                                </Text>
+                                <Menu>
+                                    <MenuButton
+                                        aria-label="Options"
+                                        variant="outline"
+                                    >
+                                        <Icon
+                                            m={4}
+                                            fontSize="20px"
+                                            color="white"
+                                            as={FaEllipsisH}
+                                        />
+                                    </MenuButton>
+                                    <MenuList>
+                                        <MenuItem
+                                            onClick={() => setDeleteModal(true)}
+                                        >
+                                            Delete Project
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
+                            </Flex>
                         </Box>
-                        <Box align="center" pt={10}>
-                            <Text
-                                fontSize="20px"
-                                color="#FFFFFF"
-                                borderBottom="1px solid white"
-                                w="max-content"
-                            >
-                                Deadlines
-                            </Text>
-                        </Box>
+
                         <Box align="center" py={5}>
+                            <Box align="left" pt={10} w="50%">
+                                <Text
+                                    fontSize="20px"
+                                    color="#FFFFFF"
+                                    w="max-content"
+                                >
+                                    Deadlines:
+                                </Text>
+                            </Box>
                             {deadlineData.map(item => (
                                 <Box
                                     bg="#1F2933"
                                     align="left"
-                                    m={4}
-                                    p={4}
-                                    width="90%"
-                                    h="200px"
+                                    my={10}
+                                    width="50%"
+                                    h="max-content"
                                     borderRadius="xl"
                                     onClick={() => {
                                         setState({ ...state, level: "3" })
                                         setDeadline(item.title)
                                     }}
                                 >
-                                    <Text
-                                        fontSize="20px"
-                                        color="#FFFFFF"
-                                        fontWeight={700}
-                                    >
-                                        {item.title}
-                                    </Text>
-                                    {/* <Text color="#FFFFFF">{item.desc}</Text> */}
-                                    <Text color="#FFFFFF">
-                                        {" "}
-                                        due on {item.date}
-                                    </Text>
+                                    <Flex gridColumnGap={2}>
+                                        <Text
+                                            fontSize="20px"
+                                            color="#FFFFFF"
+                                            fontWeight={700}
+                                        >
+                                            {item.title}
+                                        </Text>
+                                        <Text mt={1} color="#FFFFFF">
+                                            {" "}
+                                            due on {item.date}
+                                        </Text>
+                                    </Flex>
                                     <DeadlineProgress
                                         userId={userId}
                                         project={project}
@@ -262,34 +290,17 @@ const Dash = () => {
                                     />
                                 </Box>
                             ))}
-                            <Box align="left" w="90%">
+                            <Box align="left" w="50%">
                                 <Icon
                                     fontSize="30px"
                                     as={FaPlusCircle}
                                     bg="black"
-                                    m={4}
                                     color="white"
                                     borderRadius="full"
                                     onClick={() => setModal(true)}
                                 >
                                     +
                                 </Icon>
-                            </Box>
-                        </Box>
-                        <Box align="center">
-                            <Box
-                                as="button"
-                                bg="white"
-                                m={4}
-                                p={2}
-                                color="black"
-                                borderRadius="xl"
-                                onClick={() => {
-                                    deleteProject(userId, project)
-                                    goBack()
-                                }}
-                            >
-                                Delete Project
                             </Box>
                         </Box>
                         <Modal isOpen={modal} onClose={onClose}>
@@ -311,6 +322,50 @@ const Dash = () => {
                                     New Deadline
                                 </ModalHeader>
                                 <AddDeadline project={project} />
+                            </ModalContent>
+                        </Modal>
+                        <Modal isOpen={deleteModal} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent p={5}>
+                                <Button
+                                    w="max-content"
+                                    onClick={() => {
+                                        setDeleteModal(false)
+                                        setState({
+                                            ...state,
+                                            update: !state.update,
+                                        })
+                                    }}
+                                >
+                                    X
+                                </Button>
+                                <ModalHeader alignSelf="center" fontSize="20px">
+                                    Delete Project?
+                                </ModalHeader>
+                                <Box>
+                                    <Text align="center">
+                                        Are you sure you want to delete this
+                                        project?
+                                    </Text>
+                                    <Text align="center">
+                                        This action cannot be undone
+                                    </Text>
+                                </Box>
+                                <Box align="center">
+                                    <Button
+                                        mt={10}
+                                        onClick={() => {
+                                            deleteProject(userId, project),
+                                                setDeleteModal(false),
+                                                setState({
+                                                    ...state,
+                                                    level: "1",
+                                                })
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Box>
                             </ModalContent>
                         </Modal>
                     </ResponsiveBlock>
@@ -339,7 +394,7 @@ const Dash = () => {
                                 }}
                             />
                             <Text color="white" mt={12}>
-                                {`>`} {project}
+                                {`>`} {project} {`>`} {deadline}
                             </Text>
                         </Flex>
                         <Icon
@@ -354,60 +409,65 @@ const Dash = () => {
                         />
                     </Flex>
                     <ResponsiveBlock>
-                        <Box align="center" py={20}>
+                        <Box align="center" pt={10} pb={20}>
                             <Box align="left" w="50%">
+                                <Flex justify="center" mb={10}>
+                                    <Text fontSize="30px" color="white">
+                                        {deadline}
+                                    </Text>
+                                    <Menu>
+                                        <MenuButton
+                                            aria-label="Options"
+                                            variant="outline"
+                                        >
+                                            <Icon
+                                                m={4}
+                                                fontSize="20px"
+                                                color="white"
+                                                as={FaEllipsisH}
+                                            />
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuItem
+                                                onClick={() =>
+                                                    setDeleteModal(true)
+                                                }
+                                            >
+                                                Delete
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                </Flex>
                                 <Text color="white" fontSize="20px">
-                                    {deadline} Tasks:
+                                    Tasks:
                                 </Text>
                             </Box>
                             {taskData.map(item => (
                                 <Box
                                     // bg="#323F4B"
-                                    bgGradient="linear(to-l, #5E72EB, #FF9190)"
+                                    bgGradient="linear(to-r, #5E72EB, #120C6E)"
                                     align="left"
                                     m={4}
                                     p={4}
                                     width="50%"
-                                    h="200px"
+                                    h="max-content"
                                     borderRadius="xl"
                                     _hover={{ boxShadow: "md" }}
                                 >
                                     <Flex
                                         direction="row"
                                         justify="space-between"
-                                        pt={14}
+                                        // pt={14}
                                         px={10}
                                     >
                                         <Flex gridColumnGap={5}>
-                                            {/* <Checkbox 
-                                                size="lg"
-                                                colorScheme="telegram"
-                                                defaultIsChecked={
-                                                    item.isCompleted
-                                                }
-                                                onChange={e => {
-                                                    updateTask(
-                                                        userId,
-                                                        project,
-                                                        deadline,
-                                                        item.title,
-                                                        {
-                                                            isCompleted: !item.isCompleted,
-                                                        }
-                                                    )
-                                                    setState({
-                                                        ...state,
-                                                        update: !state.update,
-                                                    })
-                                                }}
-                                            ></Checkbox> */}
                                             <TaskProgress
                                                 userId={userId}
                                                 project={project}
                                                 deadline={deadline}
                                                 task={item.title}
                                             />
-                                            <Box pt={1}>
+                                            <Box>
                                                 <Text
                                                     color="white"
                                                     fontWeight={700}
@@ -464,16 +524,6 @@ const Dash = () => {
                                 </Icon>
                             </Box>
                         </Box>
-                        <Box align="center">
-                            <Button
-                                onClick={() => {
-                                    deleteDeadline(userId, project, deadline)
-                                    goBack()
-                                }}
-                            >
-                                Delete Deadline
-                            </Button>
-                        </Box>
                         <Modal isOpen={modal} onClose={onClose}>
                             <ModalOverlay />
                             <ModalContent p={5}>
@@ -496,6 +546,54 @@ const Dash = () => {
                                     project={project}
                                     deadline={deadline}
                                 />
+                            </ModalContent>
+                        </Modal>
+                        <Modal isOpen={deleteModal} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent p={5}>
+                                <Button
+                                    w="max-content"
+                                    onClick={() => {
+                                        setDeleteModal(false)
+                                        setState({
+                                            ...state,
+                                            update: !state.update,
+                                        })
+                                    }}
+                                >
+                                    X
+                                </Button>
+                                <ModalHeader alignSelf="center" fontSize="20px">
+                                    Delete Deadline?
+                                </ModalHeader>
+                                <Box>
+                                    <Text align="center">
+                                        Are you sure you want to delete this
+                                        deadline?
+                                    </Text>
+                                    <Text align="center">
+                                        This action cannot be undone
+                                    </Text>
+                                </Box>
+                                <Box align="center">
+                                    <Button
+                                        mt={10}
+                                        onClick={() => {
+                                            deleteDeadline(
+                                                userId,
+                                                project,
+                                                deadline
+                                            ),
+                                                setDeleteModal(false),
+                                                setState({
+                                                    ...state,
+                                                    level: "2",
+                                                })
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Box>
                             </ModalContent>
                         </Modal>
                     </ResponsiveBlock>
