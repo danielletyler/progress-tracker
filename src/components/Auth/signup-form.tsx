@@ -93,12 +93,12 @@ const SignupForm = () => {
     return isLoading ? (
         <Box size="giant">Loading</Box>
     ) : (
-        <Box p={20} align="center">
+        <Box p={[2, 20, 20, 20]} align="center">
             <Box
                 border="1px solid white"
                 borderRadius="xl"
-                p={10}
-                w="70%"
+                p={[5, 10, 10, 10]}
+                w={["100%", "70%", "70%", "70%"]}
                 textColor="white"
             >
                 <Text align="center" color="white" fontSize="30px">

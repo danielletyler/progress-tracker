@@ -217,7 +217,16 @@ const Dash = () => {
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center">
-                            <Flex width="max-content">
+                            <Flex
+                                mt={[4, 0, 0, 0]}
+                                width={[
+                                    "100%",
+                                    "max-content",
+                                    "max-content",
+                                    "max-content",
+                                ]}
+                                direction={["column", "row", "row", "row"]}
+                            >
                                 <Text color="#FFFFFF" fontSize="30px">
                                     {project} Overview
                                 </Text>
@@ -245,7 +254,11 @@ const Dash = () => {
                         </Box>
 
                         <Box align="center" py={5}>
-                            <Box align="left" pt={10} w="50%">
+                            <Box
+                                align="left"
+                                pt={10}
+                                w={["100%", "50%", "50%", "50%"]}
+                            >
                                 <Text
                                     fontSize="20px"
                                     color="#FFFFFF"
@@ -259,7 +272,7 @@ const Dash = () => {
                                     bg="#1F2933"
                                     align="left"
                                     my={10}
-                                    width="50%"
+                                    w={["100%", "50%", "50%", "50%"]}
                                     h="max-content"
                                     borderRadius="xl"
                                     onClick={() => {
@@ -287,7 +300,7 @@ const Dash = () => {
                                     />
                                 </Box>
                             ))}
-                            <Box align="left" w="50%">
+                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
                                 <Icon
                                     fontSize="30px"
                                     as={FaPlusCircle}
@@ -407,8 +420,12 @@ const Dash = () => {
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center" pt={10} pb={20}>
-                            <Box align="left" w="50%">
-                                <Flex justify="center" mb={10}>
+                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
+                                <Flex
+                                    justify="center"
+                                    directoin={["column", "row", "row", "row"]}
+                                    mb={10}
+                                >
                                     <Text fontSize="30px" color="white">
                                         {deadline}
                                     </Text>
@@ -446,7 +463,7 @@ const Dash = () => {
                                     align="left"
                                     m={4}
                                     p={4}
-                                    width="50%"
+                                    w={["100%", "50%", "50%", "50%"]}
                                     h="max-content"
                                     borderRadius="xl"
                                     _hover={{ boxShadow: "md" }}
@@ -507,7 +524,7 @@ const Dash = () => {
                                     </Flex>
                                 </Box>
                             ))}
-                            <Box align="left" w="50%">
+                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
                                 <Icon
                                     fontSize="30px"
                                     as={FaPlusCircle}

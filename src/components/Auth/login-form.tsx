@@ -62,20 +62,29 @@ export default function LoginForm() {
     )
 
     return (
-        <Box align="center" p={20}>
+        <Box align="center" p={[5, 20, 20, 20]}>
             <Box
                 borderRadius="xl"
                 border="1px solid white"
-                p={10}
-                w="max-content"
+                p={[1, 10, 10, 10]}
+                w={["100%", "max-content", "max-content", "max-content"]}
             >
-                <Text fontSize="25px" color="white">
+                <Text fontSize={["15px", "25px", "25px", "25px"]} color="white">
                     Welcome Back! Let's get you
                 </Text>
-                <Text fontSize="30px" color="white" fontWeight={700}>
+                <Text
+                    fontSize={["20px", "30px", "30px", "30px"]}
+                    color="white"
+                    fontWeight={700}
+                >
                     ON TRACK
                 </Text>
-                <Flex direction="column" gridRowGap={10} mt={10}>
+                <Flex
+                    direction="column"
+                    gridRowGap={10}
+                    mt={10}
+                    px={[5, 0, 0, 0]}
+                >
                     <Box>
                         <Input
                             placeholder="Email Address"
@@ -108,21 +117,23 @@ export default function LoginForm() {
                         />
                         <Text>{response}</Text>
                     </Box>
-                    <Box
-                        as="button"
-                        border="1px solid white"
-                        p={2}
-                        borderRadius="xl"
-                        width="max-content"
-                        onClick={loginPress}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <Text>Loading</Text>
-                        ) : (
-                            <Text color="white">Log In</Text>
-                        )}
-                    </Box>
+                    <Flex justify="center">
+                        <Box
+                            as="button"
+                            border="1px solid white"
+                            p={2}
+                            w="max-content"
+                            borderRadius="xl"
+                            onClick={loginPress}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <Text>Loading</Text>
+                            ) : (
+                                <Text color="white">Log In</Text>
+                            )}
+                        </Box>
+                    </Flex>
                 </Flex>
                 <Box mt={10}>
                     <Text color="white">Don't have an account?</Text>
