@@ -7,8 +7,10 @@ import {
     useToast,
     Icon,
     IconProps,
+    Flex,
 } from "@chakra-ui/react"
 import { signup } from "../../controllers/auth"
+import { navigate } from "gatsby"
 const SignupForm = () => {
     const toast = useToast()
     const [email, setEmail] = useState("")
@@ -61,6 +63,7 @@ const SignupForm = () => {
                         status: "success",
                     })
                     setIsLoading(false)
+                    navigate("/")
                 } else {
                     toast({
                         title: "Error",
@@ -90,75 +93,105 @@ const SignupForm = () => {
     return isLoading ? (
         <Box size="giant">Loading</Box>
     ) : (
-        <Box>
-            <Text category="h3">Sign Up</Text>
-            <Box>
-                <FormControl>
-                    <Input
-                        placeholder="First Name*"
-                        type="text"
-                        onChange={e => setFirstName(e.target.value)}
-                        value={firstName}
-                        status={error.type === "firstname" ? "danger" : "basic"}
-                    />
-                </FormControl>
-                <FormControl>
-                    <Input
-                        placeholder="Last Name*"
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                        status={error.type === "lastname" ? "danger" : "basic"}
-                    />
-                </FormControl>
+        <Box p={20} align="center">
+            <Box
+                border="1px solid white"
+                borderRadius="xl"
+                p={10}
+                w="70%"
+                textColor="white"
+            >
+                <Text align="center" color="white" fontSize="30px">
+                    Sign Up
+                </Text>
+                <Flex direction="column" gridRowGap={5}>
+                    <Text></Text>
+                    <FormControl>
+                        <Input
+                            placeholder="First Name*"
+                            type="text"
+                            onChange={e => setFirstName(e.target.value)}
+                            value={firstName}
+                            status={
+                                error.type === "firstname" ? "danger" : "basic"
+                            }
+                        />
+                    </FormControl>
+                    <Text></Text>
+                    <FormControl>
+                        <Input
+                            placeholder="Last Name*"
+                            value={lastName}
+                            onChange={e => setLastName(e.target.value)}
+                            status={
+                                error.type === "lastname" ? "danger" : "basic"
+                            }
+                        />
+                    </FormControl>
+
+                    <Text>
+                        {error.type === "firstname" || error.type === "lastname"
+                            ? error.response
+                            : ""}
+                    </Text>
+                    <FormControl>
+                        <Input
+                            placeholder="Email Address*"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            autoCapitalize="none"
+                            status={error.type === "email" ? "danger" : "basic"}
+                        />
+                    </FormControl>
+                    <Text>{error.type === "email" ? error.response : ""}</Text>
+                    <FormControl>
+                        <Input
+                            placeholder="Password*"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            autoCapitalize="none"
+                            status={
+                                error.type === "password" ||
+                                error.type === "confirmpassword"
+                                    ? "danger"
+                                    : "basic"
+                            }
+                            accessoryRight={showPasswordButton}
+                            secureTextEntry={!showPassword}
+                        />
+                    </FormControl>
+                    <Text>
+                        {error.type === "password" ? error.response : ""}
+                    </Text>
+                    <FormControl>
+                        <Input
+                            placeholder="Confirm Password*"
+                            value={confirmPass}
+                            onChange={e => setConfirm(e.target.value)}
+                            autoCapitalize="none"
+                            status={
+                                error.type === "confirmpassword"
+                                    ? "danger"
+                                    : "basic"
+                            }
+                            secureTextEntry={!showPassword}
+                        />
+                    </FormControl>
+                </Flex>
+                <Text>
+                    {error.type === "confirmpassword" ? error.response : ""}
+                </Text>
+                <Box
+                    border="1px solid white"
+                    borderRadius="xl"
+                    my={10}
+                    p={2}
+                    as="button"
+                    onClick={signupPress}
+                >
+                    Sign Up
+                </Box>
             </Box>
-            <Text>
-                {error.type === "firstname" || error.type === "lastname"
-                    ? error.response
-                    : ""}
-            </Text>
-            <FormControl>
-                <Input
-                    placeholder="Email Address*"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    autoCapitalize="none"
-                    status={error.type === "email" ? "danger" : "basic"}
-                />
-            </FormControl>
-            <Text>{error.type === "email" ? error.response : ""}</Text>
-            <FormControl>
-                <Input
-                    placeholder="Password*"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    autoCapitalize="none"
-                    status={
-                        error.type === "password" ||
-                        error.type === "confirmpassword"
-                            ? "danger"
-                            : "basic"
-                    }
-                    accessoryRight={showPasswordButton}
-                    secureTextEntry={!showPassword}
-                />
-            </FormControl>
-            <Text>{error.type === "password" ? error.response : ""}</Text>
-            <FormControl>
-                <Input
-                    placeholder="Confirm Password*"
-                    value={confirmPass}
-                    onChange={e => setConfirm(e.target.value)}
-                    autoCapitalize="none"
-                    status={
-                        error.type === "confirmpassword" ? "danger" : "basic"
-                    }
-                    secureTextEntry={!showPassword}
-                />
-            </FormControl>
-            <Text>
-                {error.type === "confirmpassword" ? error.response : ""}
-            </Text>
-            <Box onClick={signupPress}>Sign Up</Box>
         </Box>
     )
 }

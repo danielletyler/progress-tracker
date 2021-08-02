@@ -40,7 +40,6 @@ import {
 } from "react-icons/fa"
 import { getUser } from "../../controllers/user"
 import TaskProgress from "./task-progress"
-import EditProject from "../Edit/edit-project"
 
 const Dash = () => {
     const { userId } = useContext(UserContext)
@@ -105,20 +104,18 @@ const Dash = () => {
             )
         else
             return (
-                <Box align="center" bg="#1F2933" h="max-content">
+                <Box align="center" bg="#1F2933" h="max-content" py={5}>
                     <ResponsiveBlock>
                         <Box py={10}>
                             <Text color="#FFFFFF" fontSize="50px">
                                 {user?.first_name}'s Dashboard
                             </Text>
                         </Box>
-                        <Box align="center" mt={10}>
+                        <Box align="center" mt={20}>
                             {projData.map(item => (
                                 <Box
                                     bg="#1F2933"
                                     align="left"
-                                    m={4}
-                                    p={4}
                                     width="90%"
                                     h="200px"
                                     borderRadius="xl"
@@ -145,17 +142,17 @@ const Dash = () => {
                                 </Box>
                             ))}
                         </Box>
-                        <Box
-                            as="button"
-                            bg="#FFFFFF"
-                            w="max-content"
-                            borderRadius="xl"
-                            p={3}
-                            m={10}
-                            onClick={() => setModal(true)}
-                            color="black"
-                        >
-                            Add Project
+                        <Box align="left" w="90%">
+                            <Flex>
+                                <Icon
+                                    fontSize="30px"
+                                    as={FaPlusCircle}
+                                    bg="black"
+                                    color="white"
+                                    borderRadius="full"
+                                    onClick={() => setModal(true)}
+                                ></Icon>
+                            </Flex>
                         </Box>
                         <Modal isOpen={modal} onClose={onClose}>
                             <ModalOverlay />

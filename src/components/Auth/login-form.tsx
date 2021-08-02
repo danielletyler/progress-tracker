@@ -8,6 +8,7 @@ import {
     Icon,
     IconProps,
     useToast,
+    Flex,
 } from "@chakra-ui/react"
 
 import { login } from "../../controllers/auth"
@@ -24,7 +25,6 @@ export default function LoginForm() {
 
     async function signupPress() {
         navigate("/signup")
-        // Keyboard.dismiss()
     }
 
     const toast = useToast()
@@ -62,74 +62,79 @@ export default function LoginForm() {
     )
 
     return (
-        <Box
-            style={{
-                flex: 1,
-                justifyContent: "flex-start",
-                alignItems: "center",
-                paddingTop: 20,
-            }}
-        >
-            <Box>
-                <Text
-                    category="h3"
-                    style={{
-                        textAlign: "center",
-                        marginBottom: 20,
-                        color: "black",
-                        fontWeight: "bold",
-                    }}
-                >
-                    LS-imPACt
+        <Box align="center" p={20}>
+            <Box
+                borderRadius="xl"
+                border="1px solid white"
+                p={10}
+                w="max-content"
+            >
+                <Text fontSize="25px" color="white">
+                    Welcome Back! Let's get you
                 </Text>
-                <Input
-                    placeholder="Email Address"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    status={
-                        email.length === 0 || validateEmail(email)
-                            ? "basic"
-                            : "danger"
-                    }
-                    autoCapitalize="none"
-                />
-                <Text>{response}</Text>
-                <Input
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    autoCapitalize="none"
-                    accessoryRight={showPasswordButton}
-                    secureTextEntry={!showPassword}
-                    status={
-                        password.length > 0 && password.length < 6
-                            ? "danger"
-                            : "basic"
-                    }
-                />
-                <Text>{response}</Text>
-                <Button onClick={loginPress} disabled={loading}>
-                    {loading ? <Text>Loading</Text> : <Text>Log In</Text>}
-                </Button>
-
-                <Box>
-                    <Text>Don't have an account?</Text>
+                <Text fontSize="30px" color="white" fontWeight={700}>
+                    ON TRACK
+                </Text>
+                <Flex direction="column" gridRowGap={10} mt={10}>
+                    <Box>
+                        <Input
+                            placeholder="Email Address"
+                            value={email}
+                            color="white"
+                            onChange={e => setEmail(e.target.value)}
+                            status={
+                                email.length === 0 || validateEmail(email)
+                                    ? "basic"
+                                    : "danger"
+                            }
+                            autoCapitalize="none"
+                        />
+                        <Text>{response}</Text>
+                    </Box>
+                    <Box>
+                        <Input
+                            placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            autoCapitalize="none"
+                            accessoryRight={showPasswordButton}
+                            secureTextEntry={!showPassword}
+                            color="white"
+                            status={
+                                password.length > 0 && password.length < 6
+                                    ? "danger"
+                                    : "basic"
+                            }
+                        />
+                        <Text>{response}</Text>
+                    </Box>
+                    <Box
+                        as="button"
+                        border="1px solid white"
+                        p={2}
+                        borderRadius="xl"
+                        width="max-content"
+                        onClick={loginPress}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <Text>Loading</Text>
+                        ) : (
+                            <Text color="white">Log In</Text>
+                        )}
+                    </Box>
+                </Flex>
+                <Box mt={10}>
+                    <Text color="white">Don't have an account?</Text>
                     <Box
                         as="button"
                         marginLeft={6}
-                        color="black"
+                        color="white"
                         onClick={signupPress}
+                        _hover={{ borderBottom: "1px solid white" }}
                     >
-                        Sign up.
+                        Sign up
                     </Box>
-                </Box>
-                <Box>
-                    <Text
-                        color="black"
-                        onPress={() => navigate("ForgotPassword")}
-                    >
-                        Forgot password?
-                    </Text>
                 </Box>
             </Box>
         </Box>
