@@ -24,8 +24,7 @@ const TaskProgress: React.FC<{
         return (
             <Box>
                 <Checkbox
-                    size="lg"
-                    colorScheme="gray"
+                    colorScheme="teal"
                     defaultIsChecked={taskData!.isCompleted}
                     onChange={e => {
                         updateTask(userId, project, deadline, taskData!.title, {

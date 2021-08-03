@@ -55,7 +55,7 @@ const Dash = () => {
     const [deadline, setDeadline] = useState("")
     const [modal, setModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
-    const [deleteTaskModal, setDeleteTaskModal] = useState(false)
+    // const [deleteTaskIcon, setDeleteTaskIcon] = useState("#1F2933")
     const [isLoadingProj, setIsLoadingProj] = useState(true)
     const [isLoadingDead, setIsLoadingDead] = useState(true)
     const [isLoadingTask, setIsLoadingTask] = useState(true)
@@ -420,7 +420,10 @@ const Dash = () => {
                     </Flex>
                     <ResponsiveBlock>
                         <Box align="center" pt={10} pb={20}>
-                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
+                            <Box
+                                align="center"
+                                w={["100%", "20%", "20%", "30%"]}
+                            >
                                 <Flex
                                     justify="center"
                                     directoin={["column", "row", "row", "row"]}
@@ -452,29 +455,56 @@ const Dash = () => {
                                         </MenuList>
                                     </Menu>
                                 </Flex>
-                                <Text color="white" fontSize="20px">
+                                <Text
+                                    align="left"
+                                    color="white"
+                                    fontSize="20px"
+                                    mb={5}
+                                    pl={[10, 0, 0, 0]}
+                                >
                                     Tasks:
                                 </Text>
                             </Box>
-                            {taskData.map(item => (
-                                <Box
-                                    // bg="#323F4B"
-                                    bgGradient="linear(to-r, #5E72EB, #120C6E)"
-                                    align="left"
-                                    m={4}
-                                    p={4}
-                                    w={["100%", "50%", "50%", "50%"]}
-                                    h="max-content"
-                                    borderRadius="xl"
-                                    _hover={{ boxShadow: "md" }}
-                                >
-                                    <Flex
-                                        direction="row"
-                                        justify="space-between"
-                                        // pt={14}
-                                        px={10}
+                            <Box pl={[10, 0, 0, 0]}>
+                                {taskData.map(item => (
+                                    <Box
+                                        align="left"
+                                        w={["100%", "20%", "20%", "30%"]}
+                                        h="max-content"
+                                        borderRadius="xl"
+                                        mb={5}
+                                        ml={-10}
                                     >
-                                        <Flex gridColumnGap={5}>
+                                        <Flex
+                                            gridColumnGap={5}
+                                            w={[
+                                                "100%",
+                                                "max-content",
+                                                "max-content",
+                                                "max-content",
+                                            ]}
+                                        >
+                                            <Box w="max-content">
+                                                <Icon
+                                                    fontSize="20px"
+                                                    as={FaMinusCircle}
+                                                    color={"#2c3b4a"}
+                                                    onClick={() => {
+                                                        deleteTask(
+                                                            userId,
+                                                            project,
+                                                            deadline,
+                                                            item.title
+                                                        ),
+                                                            setState({
+                                                                ...state,
+                                                                update: !state.update,
+                                                            })
+                                                    }}
+                                                    _hover={{ color: "red" }}
+                                                    transition="0.5s"
+                                                ></Icon>
+                                            </Box>
                                             <TaskProgress
                                                 userId={userId}
                                                 project={project}
@@ -499,37 +529,18 @@ const Dash = () => {
                                                     <Text></Text>
                                                 )}
                                             </Box>
+                                            {/* </Flex> */}
                                         </Flex>
-                                        <Icon
-                                            pl={5}
-                                            fontSize="30px"
-                                            as={FaMinusCircle}
-                                            // color="#FF9190"
-                                            color="white"
-                                            // bg="#323F4B"
-                                            onClick={() => {
-                                                deleteTask(
-                                                    userId,
-                                                    project,
-                                                    deadline,
-                                                    item.title
-                                                ),
-                                                    setState({
-                                                        ...state,
-                                                        update: !state.update,
-                                                    })
-                                            }}
-                                            w="max-content"
-                                        ></Icon>
-                                    </Flex>
-                                </Box>
-                            ))}
-                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
+                                    </Box>
+                                ))}
+                            </Box>
+                            <Box align="left" w={["100%", "20%", "20%", "30%"]}>
                                 <Icon
                                     fontSize="30px"
                                     as={FaPlusCircle}
                                     bg="black"
                                     m={4}
+                                    ml={[10, 0, 0, 0]}
                                     color="white"
                                     borderRadius="full"
                                     onClick={() => setModal(true)}
