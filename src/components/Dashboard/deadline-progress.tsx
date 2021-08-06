@@ -7,7 +7,6 @@ const DeadlineProgress: React.FC<{
     userId: string
     project: string
     deadline: string
-    // level: string
 }> = ({ userId, project, deadline }) => {
     const [tasks, setTasks] = useState<Task[]>([])
     const [completed, setCompleted] = useState(0)
@@ -63,7 +62,7 @@ const DeadlineProgress: React.FC<{
                         borderRadius="xl"
                     >
                         <Box
-                            bgGradient="linear(to-l, #FF9190, #FDC094 )"
+                            bgGradient="linear(to-l, #5E72EB, #5E72EB, #FF9190, #FDC094)"
                             w={finalString}
                             h="100%"
                             borderRadius="xl"

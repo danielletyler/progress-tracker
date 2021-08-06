@@ -18,18 +18,19 @@ import {
 } from "@chakra-ui/react"
 import ResponsiveBlock from "../shared/responsive-block"
 import {
-    getAllTasks,
     getAllDeadlines,
     getAllProjects,
     deleteProject,
+    deleteDeadline,
 } from "../../controllers/project"
 import { UserContext } from "~config/user-context"
-import { Deadline, Project, Task, User } from "~models"
+import { Deadline, Project, User } from "~models"
 import AddProject from "../Add/add-project"
 import AddDeadline from "../Add/add-deadline"
 import DeadlineProgress from "./deadline-progress"
 import ProjectProgress from "./project-progress"
 import {
+    FaMinusCircle,
     FaPlusCircle,
     FaChevronCircleLeft,
     FaRedo,
@@ -43,19 +44,19 @@ const Dash = () => {
     const [user, setUser] = useState<User | undefined>(undefined)
     const [projData, setProjData] = useState<Project[]>([])
     const [deadlineData, setDeadlineData] = useState<Deadline[]>([])
-    const [taskData, setTaskData] = useState<Task[]>([])
+    // const [taskData, setTaskData] = useState<Task[]>([])
     const [state, setState] = useState({
         level: "1",
         update: false,
     })
     const [project, setProject] = useState("")
-    const [deadline, setDeadline] = useState("")
+    // const [deadline, setDeadline] = useState("")
     const [modal, setModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
     // const [deleteTaskIcon, setDeleteTaskIcon] = useState("#1F2933")
     const [isLoadingProj, setIsLoadingProj] = useState(true)
     const [isLoadingDead, setIsLoadingDead] = useState(true)
-    const [isLoadingTask, setIsLoadingTask] = useState(true)
+    // const [isLoadingTask, setIsLoadingTask] = useState(true)
     const { onClose } = useDisclosure()
 
     useEffect(() => {
@@ -76,13 +77,6 @@ const Dash = () => {
         getAllDeadlines(userId as string, project).then(res => {
             if (!res.data) return
             return setDeadlineData(res.data), setIsLoadingDead(false)
-        })
-    }, [state])
-
-    useEffect(() => {
-        getAllTasks(userId as string, project, deadline).then(res => {
-            if (!res.data) return
-            return setTaskData(res.data), setIsLoadingTask(false)
         })
     }, [state])
 
@@ -216,14 +210,10 @@ const Dash = () => {
                         <Box align="center">
                             <Flex
                                 mt={[4, 0, 0, 0]}
-                                width={[
-                                    "100%",
-                                    "max-content",
-                                    "max-content",
-                                    "max-content",
-                                ]}
                                 direction={["column", "row", "row", "row"]}
                                 alignItems="center"
+                                justify="center"
+                                mb={20}
                             >
                                 <Text color="#FFFFFF" fontSize="30px">
                                     {project} Overview
@@ -266,39 +256,52 @@ const Dash = () => {
                         </Box>
 
                         <Box align="center" py={5}>
-                            {/* <Box
-                                align="left"
-                                pt={10}
-                                // w={["100%", "50%", "50%", "50%"]}
-                            >
-                                <Text
-                                    fontSize="20px"
-                                    color="#FFFFFF"
-                                    w="max-content"
-                                >
-                                    Deadlines:
-                                </Text>
-                            </Box> */}
                             <SimpleGrid
                                 columns={[1, 1, 1, 3]}
                                 gridColumnGap={20}
+                                gridRowGap={[20, 10, 10, 10]}
                             >
                                 {deadlineData.map(item => (
                                     <Box
                                         bg="#1F2933"
                                         align="left"
-                                        my={10}
                                         h="max-content"
                                         borderRadius="xl"
                                     >
                                         <Box>
-                                            <Text
-                                                fontSize="20px"
-                                                color="#FFFFFF"
-                                                fontWeight={700}
+                                            <Flex
+                                                alignItems="center"
+                                                gridColumnGap={2}
                                             >
-                                                {item.title}
-                                            </Text>
+                                                <Text
+                                                    fontSize="20px"
+                                                    color="#FFFFFF"
+                                                    fontWeight={700}
+                                                >
+                                                    {item.title}
+                                                </Text>
+                                                <Icon
+                                                    fontSize="20px"
+                                                    as={FaMinusCircle}
+                                                    color={"#2c3b4a"}
+                                                    onClick={() => {
+                                                        deleteDeadline(
+                                                            userId,
+                                                            project,
+                                                            item.title
+                                                        ),
+                                                            setState({
+                                                                ...state,
+                                                                update: !state.update,
+                                                            })
+                                                    }}
+                                                    _hover={{
+                                                        color:
+                                                            "rgba(255, 0, 0, 0.5)",
+                                                    }}
+                                                    transition="0.25s"
+                                                ></Icon>
+                                            </Flex>
                                             <Text mt={1} color="#FFFFFF">
                                                 {" "}
                                                 due on {item.date}

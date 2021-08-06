@@ -12,12 +12,7 @@ import {
     useDisclosure,
 } from "@chakra-ui/react"
 import { Task } from "~models"
-import {
-    deleteDeadline,
-    updateTask,
-    getAllTasks,
-    deleteTask,
-} from "../../controllers/project"
+import { getAllTasks, deleteTask } from "../../controllers/project"
 import TaskProgress from "./task-progress"
 import { FaMinusCircle } from "react-icons/fa"
 import AddTask from "../Add/add-task"
@@ -28,7 +23,6 @@ const NewTaskProgress: React.FC<{
     deadline: string
 }> = ({ userId, project, deadline }) => {
     const [modal, setModal] = useState(false)
-    const [deleteModal, setDeleteModal] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [taskData, setTaskData] = useState<Task[]>()
     const [state, setState] = useState({
@@ -57,7 +51,7 @@ const NewTaskProgress: React.FC<{
                         // ml={-10}
                         alignItems="baseline"
                     >
-                        <Flex gridColumnGap={5} alignItems="center">
+                        <Flex gridColumnGap={5} alignItems="baseline">
                             <Icon
                                 fontSize="20px"
                                 as={FaMinusCircle}
@@ -74,7 +68,7 @@ const NewTaskProgress: React.FC<{
                                             update: !state.update,
                                         })
                                 }}
-                                _hover={{ color: "red" }}
+                                _hover={{ color: "rgba(255, 0, 0, 0.5)" }}
                                 transition="0.5s"
                             ></Icon>
 
