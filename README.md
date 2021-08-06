@@ -1,54 +1,51 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
+# On Track
 
-## 🚀 Quick start
+> A responsive web application for tracking the progress of multiple projects.
 
-1.  **Create a Gatsby site.**
+## General Information
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+One of my favorite practices for staying on top of my work is setting personal deadlines for assignments. This lets me know I am staying on track and getting things done on time. To facilitate this, I decided to design my ideal progress tracking workspace for my final year at LSU and that's exactly what On Track is.
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+## Technologies Used
 
-2.  **Start developing.**
+-   React - version 3.5.1
+-   Chakra UI - version 1.6.0
+-   Firebase - version 8.8.1
 
-    Navigate into your new site’s directory and start it up.
+## Screenshots
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+Dashboard
+![Dashboard](./OnTrack.png)
 
-3.  **Open the code and start customizing!**
+Project Overview
+![ProjectOverview](./ontrack_2.png)
 
-    Your site is now running at http://localhost:8000!
+## Setup
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+To run this project, install it locally using yarn or npm
 
-4.  **Learn more**
+yarn
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+```
+$ cd ../progress-tracker
+$ yarn
+$ yarn start
+```
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+npm
 
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+```
+$ cd ../progress-tracker
+$ npm install
+$ npm start
+```
 
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## Features
 
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+-   Add all ongoing projects to your dashboard so you can visually see the progress of each one
+-   Set deadlines within your projects to make sure you are staying on track
+-   Check off tasks as you complete them
 
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## Contact
 
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+Created by [Dani Tyler](https://www.dani-tyler.com)
