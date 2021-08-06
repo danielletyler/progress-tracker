@@ -14,6 +14,7 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
+    SimpleGrid,
 } from "@chakra-ui/react"
 import ResponsiveBlock from "../shared/responsive-block"
 import {
@@ -21,25 +22,21 @@ import {
     getAllDeadlines,
     getAllProjects,
     deleteProject,
-    deleteDeadline,
-    deleteTask,
 } from "../../controllers/project"
 import { UserContext } from "~config/user-context"
 import { Deadline, Project, Task, User } from "~models"
 import AddProject from "../Add/add-project"
 import AddDeadline from "../Add/add-deadline"
-import AddTask from "../Add/add-task"
 import DeadlineProgress from "./deadline-progress"
 import ProjectProgress from "./project-progress"
 import {
     FaPlusCircle,
     FaChevronCircleLeft,
-    FaMinusCircle,
     FaRedo,
     FaEllipsisH,
 } from "react-icons/fa"
 import { getUser } from "../../controllers/user"
-import TaskProgress from "./task-progress"
+import NewTaskProgress from "./new-task-progress"
 
 const Dash = () => {
     const { userId } = useContext(UserContext)
@@ -226,38 +223,53 @@ const Dash = () => {
                                     "max-content",
                                 ]}
                                 direction={["column", "row", "row", "row"]}
+                                alignItems="center"
                             >
                                 <Text color="#FFFFFF" fontSize="30px">
                                     {project} Overview
                                 </Text>
-                                <Menu>
-                                    <MenuButton
-                                        aria-label="Options"
-                                        variant="outline"
-                                    >
-                                        <Icon
-                                            m={4}
-                                            fontSize="20px"
-                                            color="white"
-                                            as={FaEllipsisH}
-                                        />
-                                    </MenuButton>
-                                    <MenuList>
-                                        <MenuItem
-                                            onClick={() => setDeleteModal(true)}
+                                <Flex alignItems="center">
+                                    <Menu>
+                                        <MenuButton
+                                            aria-label="Options"
+                                            variant="outline"
                                         >
-                                            Delete Project
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
+                                            <Icon
+                                                m={4}
+                                                fontSize="20px"
+                                                color="white"
+                                                as={FaEllipsisH}
+                                            />
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuItem
+                                                onClick={() =>
+                                                    setDeleteModal(true)
+                                                }
+                                            >
+                                                Delete Project
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                    <Icon
+                                        fontSize="20px"
+                                        as={FaPlusCircle}
+                                        bg="black"
+                                        color="white"
+                                        borderRadius="full"
+                                        onClick={() => setModal(true)}
+                                    >
+                                        +
+                                    </Icon>
+                                </Flex>
                             </Flex>
                         </Box>
 
                         <Box align="center" py={5}>
-                            <Box
+                            {/* <Box
                                 align="left"
                                 pt={10}
-                                w={["100%", "50%", "50%", "50%"]}
+                                // w={["100%", "50%", "50%", "50%"]}
                             >
                                 <Text
                                     fontSize="20px"
@@ -266,52 +278,49 @@ const Dash = () => {
                                 >
                                     Deadlines:
                                 </Text>
-                            </Box>
-                            {deadlineData.map(item => (
-                                <Box
-                                    bg="#1F2933"
-                                    align="left"
-                                    my={10}
-                                    w={["100%", "50%", "50%", "50%"]}
-                                    h="max-content"
-                                    borderRadius="xl"
-                                    onClick={() => {
-                                        setState({ ...state, level: "3" })
-                                        setDeadline(item.title)
-                                    }}
-                                >
-                                    <Flex gridColumnGap={2}>
-                                        <Text
-                                            fontSize="20px"
-                                            color="#FFFFFF"
-                                            fontWeight={700}
-                                        >
-                                            {item.title}
-                                        </Text>
-                                        <Text mt={1} color="#FFFFFF">
-                                            {" "}
-                                            due on {item.date}
-                                        </Text>
-                                    </Flex>
-                                    <DeadlineProgress
-                                        userId={userId}
-                                        project={project}
-                                        deadline={item.title}
-                                    />
-                                </Box>
-                            ))}
-                            <Box align="left" w={["100%", "50%", "50%", "50%"]}>
-                                <Icon
-                                    fontSize="30px"
-                                    as={FaPlusCircle}
-                                    bg="black"
-                                    color="white"
-                                    borderRadius="full"
-                                    onClick={() => setModal(true)}
-                                >
-                                    +
-                                </Icon>
-                            </Box>
+                            </Box> */}
+                            <SimpleGrid
+                                columns={[1, 1, 1, 3]}
+                                gridColumnGap={20}
+                            >
+                                {deadlineData.map(item => (
+                                    <Box
+                                        bg="#1F2933"
+                                        align="left"
+                                        my={10}
+                                        h="max-content"
+                                        borderRadius="xl"
+                                    >
+                                        <Box>
+                                            <Text
+                                                fontSize="20px"
+                                                color="#FFFFFF"
+                                                fontWeight={700}
+                                            >
+                                                {item.title}
+                                            </Text>
+                                            <Text mt={1} color="#FFFFFF">
+                                                {" "}
+                                                due on {item.date}
+                                            </Text>
+                                        </Box>
+                                        <DeadlineProgress
+                                            userId={userId}
+                                            project={project}
+                                            deadline={item.title}
+                                        />
+                                        <NewTaskProgress
+                                            deadline={item.title}
+                                            userId={userId}
+                                            project={project}
+                                        />
+                                    </Box>
+                                ))}
+                            </SimpleGrid>
+                            <Box
+                                align="left"
+                                // w={["100%", "50%", "50%", "50%"]}
+                            ></Box>
                         </Box>
                         <Modal isOpen={modal} onClose={onClose}>
                             <ModalOverlay />
@@ -370,249 +379,6 @@ const Dash = () => {
                                                 setState({
                                                     ...state,
                                                     level: "1",
-                                                })
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
-                                </Box>
-                            </ModalContent>
-                        </Modal>
-                    </ResponsiveBlock>
-                </Box>
-            )
-    else if (state.level === "3")
-        if (isLoadingTask)
-            return (
-                <Box color="white" p={20}>
-                    LOADING
-                </Box>
-            )
-        else
-            return (
-                <Box bg="#1F2933" h="max-content">
-                    <Flex justify="space-between">
-                        <Flex>
-                            <Icon
-                                fontSize="30px"
-                                m={10}
-                                as={FaChevronCircleLeft}
-                                color="white"
-                                bg="black"
-                                onClick={() => {
-                                    goBack()
-                                }}
-                            />
-                            <Text color="white" mt={12}>
-                                {`>`} {project} {`>`} {deadline}
-                            </Text>
-                        </Flex>
-                        <Icon
-                            fontSize="30px"
-                            m={10}
-                            as={FaRedo}
-                            color="white"
-                            bg="black"
-                            onClick={() => {
-                                setState({ ...state, update: !state.update })
-                            }}
-                        />
-                    </Flex>
-                    <ResponsiveBlock>
-                        <Box align="center" pt={10} pb={20}>
-                            <Box
-                                align="center"
-                                w={["100%", "20%", "20%", "30%"]}
-                            >
-                                <Flex
-                                    justify="center"
-                                    directoin={["column", "row", "row", "row"]}
-                                    mb={10}
-                                >
-                                    <Text fontSize="30px" color="white">
-                                        {deadline}
-                                    </Text>
-                                    <Menu>
-                                        <MenuButton
-                                            aria-label="Options"
-                                            variant="outline"
-                                        >
-                                            <Icon
-                                                m={4}
-                                                fontSize="20px"
-                                                color="white"
-                                                as={FaEllipsisH}
-                                            />
-                                        </MenuButton>
-                                        <MenuList>
-                                            <MenuItem
-                                                onClick={() =>
-                                                    setDeleteModal(true)
-                                                }
-                                            >
-                                                Delete
-                                            </MenuItem>
-                                        </MenuList>
-                                    </Menu>
-                                </Flex>
-                                <Text
-                                    align="left"
-                                    color="white"
-                                    fontSize="20px"
-                                    mb={5}
-                                    pl={[10, 0, 0, 0]}
-                                >
-                                    Tasks:
-                                </Text>
-                            </Box>
-                            <Box pl={[10, 0, 0, 0]}>
-                                {taskData.map(item => (
-                                    <Box
-                                        align="left"
-                                        w={["100%", "20%", "20%", "30%"]}
-                                        h="max-content"
-                                        borderRadius="xl"
-                                        mb={5}
-                                        ml={-10}
-                                    >
-                                        <Flex
-                                            gridColumnGap={5}
-                                            w={[
-                                                "100%",
-                                                "max-content",
-                                                "max-content",
-                                                "max-content",
-                                            ]}
-                                        >
-                                            <Box w="max-content">
-                                                <Icon
-                                                    fontSize="20px"
-                                                    as={FaMinusCircle}
-                                                    color={"#2c3b4a"}
-                                                    onClick={() => {
-                                                        deleteTask(
-                                                            userId,
-                                                            project,
-                                                            deadline,
-                                                            item.title
-                                                        ),
-                                                            setState({
-                                                                ...state,
-                                                                update: !state.update,
-                                                            })
-                                                    }}
-                                                    _hover={{ color: "red" }}
-                                                    transition="0.5s"
-                                                ></Icon>
-                                            </Box>
-                                            <TaskProgress
-                                                userId={userId}
-                                                project={project}
-                                                deadline={deadline}
-                                                task={item.title}
-                                            />
-                                            <Box>
-                                                <Text
-                                                    color="white"
-                                                    fontWeight={700}
-                                                >
-                                                    {item.title}
-                                                </Text>
-                                                <Text color="white">
-                                                    {item.desc}
-                                                </Text>
-                                                {item.date != "" ? (
-                                                    <Text color="white">
-                                                        due on {item.date}
-                                                    </Text>
-                                                ) : (
-                                                    <Text></Text>
-                                                )}
-                                            </Box>
-                                            {/* </Flex> */}
-                                        </Flex>
-                                    </Box>
-                                ))}
-                            </Box>
-                            <Box align="left" w={["100%", "20%", "20%", "30%"]}>
-                                <Icon
-                                    fontSize="30px"
-                                    as={FaPlusCircle}
-                                    bg="black"
-                                    m={4}
-                                    ml={[10, 0, 0, 0]}
-                                    color="white"
-                                    borderRadius="full"
-                                    onClick={() => setModal(true)}
-                                >
-                                    +
-                                </Icon>
-                            </Box>
-                        </Box>
-                        <Modal isOpen={modal} onClose={onClose}>
-                            <ModalOverlay />
-                            <ModalContent p={5}>
-                                <Button
-                                    w="max-content"
-                                    onClick={() => {
-                                        setModal(false)
-                                        setState({
-                                            ...state,
-                                            update: !state.update,
-                                        })
-                                    }}
-                                >
-                                    X
-                                </Button>
-                                <ModalHeader alignSelf="center" fontSize="20px">
-                                    New Task
-                                </ModalHeader>
-                                <AddTask
-                                    project={project}
-                                    deadline={deadline}
-                                />
-                            </ModalContent>
-                        </Modal>
-                        <Modal isOpen={deleteModal} onClose={onClose}>
-                            <ModalOverlay />
-                            <ModalContent p={5}>
-                                <Button
-                                    w="max-content"
-                                    onClick={() => {
-                                        setDeleteModal(false)
-                                        setState({
-                                            ...state,
-                                            update: !state.update,
-                                        })
-                                    }}
-                                >
-                                    X
-                                </Button>
-                                <ModalHeader alignSelf="center" fontSize="20px">
-                                    Delete Deadline?
-                                </ModalHeader>
-                                <Box>
-                                    <Text align="center">
-                                        Are you sure you want to delete this
-                                        deadline?
-                                    </Text>
-                                    <Text align="center">
-                                        This action cannot be undone
-                                    </Text>
-                                </Box>
-                                <Box align="center">
-                                    <Button
-                                        mt={10}
-                                        onClick={() => {
-                                            deleteDeadline(
-                                                userId,
-                                                project,
-                                                deadline
-                                            ),
-                                                setDeleteModal(false),
-                                                setState({
-                                                    ...state,
-                                                    level: "2",
                                                 })
                                         }}
                                     >
