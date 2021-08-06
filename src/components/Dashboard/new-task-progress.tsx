@@ -52,26 +52,27 @@ const NewTaskProgress: React.FC<{
                         alignItems="baseline"
                     >
                         <Flex gridColumnGap={5} alignItems="baseline">
-                            <Icon
-                                fontSize="20px"
-                                as={FaMinusCircle}
-                                color={"#2c3b4a"}
-                                onClick={() => {
-                                    deleteTask(
-                                        userId,
-                                        project,
-                                        deadline,
-                                        item.title
-                                    ),
-                                        setState({
-                                            ...state,
-                                            update: !state.update,
-                                        })
-                                }}
-                                _hover={{ color: "rgba(255, 0, 0, 0.5)" }}
-                                transition="0.5s"
-                            ></Icon>
-
+                            <Box mt={1}>
+                                <Icon
+                                    fontSize="20px"
+                                    as={FaMinusCircle}
+                                    color={"#2c3b4a"}
+                                    onClick={() => {
+                                        deleteTask(
+                                            userId,
+                                            project,
+                                            deadline,
+                                            item.title
+                                        ),
+                                            setState({
+                                                ...state,
+                                                update: !state.update,
+                                            })
+                                    }}
+                                    _hover={{ color: "rgba(255, 0, 0, 0.5)" }}
+                                    transition="0.5s"
+                                ></Icon>
+                            </Box>
                             <TaskProgress
                                 userId={userId}
                                 project={project}
