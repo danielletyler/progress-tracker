@@ -15,4 +15,7 @@ One of my favorite practices for staying on top of my work is setting personal d
 ## Screenshots
 
 ![Dashboard](./OnTrack.png)
+<h7>Dashboard</h7>
+
 ![ProjectOverview](./ontrack_2.png)
+<h7>Project Overview</h7>
