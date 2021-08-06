@@ -1,6 +1,9 @@
 <h1 align="center">
   On Track
 </h1>
+<h2  align='left'>
+  A responsive web application for tracking the progress of multiple projects.
+</h2>
 
 ## 🚀 Quick start
 
