@@ -14,11 +14,11 @@ One of my favorite practices for staying on top of my work is setting personal d
 
 ## Screenshots
 
-![Dashboard](./OnTrack.png)
 Dashboard
+![Dashboard](./OnTrack.png)
 
-![ProjectOverview](./ontrack_2.png)
 Project Overview
+![ProjectOverview](./ontrack_2.png)
 
 ## Setup
 
@@ -39,3 +39,13 @@ $ cd ../progress-tracker
 $ npm install
 $ npm start
 ```
+
+## Features
+
+-   Add all ongoing projects to your dashboard so you can visually see the progress of each one
+-   Set deadlines within your projects to make sure you are staying on track
+-   Check off tasks as you complete them
+
+## Contact
+
+Created by [Dani Tyler](https://www.dani-tyler.com)
