@@ -43,7 +43,8 @@
         "react-intersection-observer": "^8.31.0",
         "react-multi-carousel": "^2.6.1",
         "react-scroll": "^1.8.1",
-        "react-ui-cards": "^2.0.0"
+        "react-ui-cards": "^2.0.0",
+        "readme-md-generator": "^1.0.0"
     },
     "devDependencies": {
         "link-module-alias": "^1.2.0"
